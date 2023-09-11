@@ -1,50 +1,41 @@
 <template>
-  <div>
-    <div class="top">
-      <div class="title">上证指数</div>
-      <div class="num">
-        <div class="num1">3125.31</div>
-        <div class="num2">-31.21(-1.3%)</div>
+  <div style="height:70px">
+    <div class="top" >
+      <div class="title" >{{data.name}}</div>
+      <div class="num" :style="data.num2.valueOf() > 0?'color:red':'color:#17da24'">
+        <div class="num1">{{data.num1}}</div>
+        <div class="num2">{{data.num2.valueOf() < 0?data.num2:`+${data.num2}`}}({{data.num3.valueOf() < 0?data.num3:`+${data.num3}`}}%)</div>
       </div>
-
     </div>
     <div class="table">
       <div class="row">
-        <div class="cell">内容1</div>
-        <div class="cell">内容2</div>
-        <div class="cell">内容3</div>
-        <div class="cell">内容4</div>
-        <div class="cell">内容5</div>
+        <div v-for="(item,index) in data1" :key="index" class="cell">{{item}}:</div>
       </div>
       <div class="row">
-        <div class="cell">内容6</div>
-        <div class="cell">内容7</div>
-        <div class="cell">内容8</div>
-        <div class="cell">内容9</div>
-        <div class="cell">内容10</div>
+        <div class="cell">3123.2</div>
+        <div class="cell">3123.2</div>
+        <div class="cell">3123.2</div>
+        <div class="cell">3123.2</div>
+        <div class="cell">3123.2</div>
       </div>
       <div class="row">
-        <div class="cell">内容11</div>
-        <div class="cell">内容12</div>
-        <div class="cell">内容13</div>
-        <div class="cell">内容14</div>
-        <div class="cell">内容15</div>
+        <div v-for="(item,index) in data2" :key="index" class="cell">{{item}}:</div>
       </div>
       <div class="row">
-        <div class="cell">内容16</div>
-        <div class="cell">内容17</div>
-        <div class="cell">内容18</div>
-        <div class="cell">内容19</div>
-        <div class="cell">内容20</div>
+        <div class="cell">3123.2</div>
+        <div class="cell">3123.2</div>
+        <div class="cell">3123.2</div>
+        <div class="cell">3123.2</div>
+        <div class="cell">3123.2</div>
       </div>
     </div>
   </div>
-  <div ref="main" style="width100%;height:400px"></div>
+  <div ref="main" style="width100%;height:350px"></div>
 </template>
 
 <script setup lang="ts">
 import * as echarts from "echarts";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, toRefs,watch } from "vue";
 const main = ref(); // 使用ref创建虚拟DOM引用，使用时用main.value
 
 const stockData = [
@@ -92,19 +83,20 @@ const init = () => {
       {
         type: "text",
         left: "center",
-        top: 10,
-        style: {
-          text: "股票信息",
-          fontSize: 14,
-          fontWeight: "bold",
-        },
       },
     ],
   };
 
   myChart.setOption(option);
 };
-let data = ["今开", "最高", "成交量", "上涨", "公司数", "昨收"];
+let data1 = ["今开", "最高", "成交量", "上涨", "公司数"];
+let data2 = ["昨收", "最低", "成交额", "平盘", "下跌"];
+interface dataType { name: String; num1: Number; num2: Number; num3: Number }
+const props=defineProps({
+  data: {
+    type:Object as ()=>dataType,
+    required:true
+  }})
 onMounted(() => {
   init();
 });
@@ -115,6 +107,7 @@ onMounted(() => {
   display: flex;
   .title {
     font-size: 20px;
+    width: 150px;
   }
   .num {
     display: flex;
@@ -132,15 +125,18 @@ onMounted(() => {
 table {
   border-collapse: collapse;
   font-family: Arial, sans-serif;
+  // display: flex;
 }
-
 .row {
   display: flex;
+  font-size: 13px;
+  color: #666666;
+  margin: 0 auto;
+  margin-left: 20px;
 }
-
 .cell {
   flex: 1;
-  padding: 5px;
+  padding: 2px;
   text-align: left;
 }
 </style>

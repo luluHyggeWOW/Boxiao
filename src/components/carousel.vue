@@ -1,9 +1,9 @@
 <template>
   <div>
-    <el-carousel height="100px" :autoplay="false" @change="changePage" :indicator-position="none">
+    <el-carousel height="100px" :autoplay="false" @change="changePage" :indicator-position="none" :show-indicators="false">
       <el-carousel-item v-for="item in Math.ceil(data.length / 7)" :key="item">
         <div class="box">
-          <div class="databox" v-for="(data,index) in data.slice(page*7,page*7+7)" :key="index"
+          <div class="databox" v-for="(data,index) in data.slice(page*7,page*7+7)" :key="index" @click="changeData(data)"
             :style="data.num2>0?'background-color:rgb(248, 164, 164);color:red':'background-color:#eefce8;color:#17da24'">
             <p class="title" :style="data.num2>0?'color:rgb(228, 237, 63)':'color:#007ffe;'">{{data.name}}</p>
             <p class="num">{{data.num1}}</p>
@@ -32,19 +32,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-
-let startnum = 0;
-let data = [
+import { onMounted, ref } from "vue";
+let data:{ name: string, num1: number, num2: number, num3: number }[] = [
   { name: "上证指数", num1: 3122.25, num2: -35.72, num3: -1.13 },
-  { name: "沪深300", num1: 3122.25, num2: -35.72, num3: -1.13 },
-  { name: "中证500", num1: 3122.25, num2: +35.72, num3: +1.13 },
-  { name: "CR基石", num1: 3122.25, num2: -35.72, num3: -1.13 },
-  { name: "CR新动能", num1: 3122.25, num2: -35.72, num3: -1.13 },
-  { name: "创业扳指", num1: 3122.25, num2: +35.72, num3: +1.13 },
-  { name: "中证1000", num1: 3122.25, num2: -35.72, num3: -1.13 },
-  { name: "上证指数", num1: 3122.25, num2: +35.72, num3: +1.13 },
-  { name: "上证指数", num1: 3122.25, num2: -35.72, num3: -1.13 },
+  { name: "沪深300", num1: 35322.25, num2: -65.72, num3: -13.13 },
+  { name: "中证500", num1: 1322.25, num2: +35.72, num3: +1.13 },
+  { name: "CR基石", num1: 5122.25, num2: -65.72, num3: -12.13 },
+  { name: "CR新动能", num1: 9122.25, num2: -35.72, num3: -11.13 },
+  { name: "创业扳指", num1: 8122.25, num2: +65.72, num3: +1.13 },
+  { name: "中证1000", num1: 1122.25, num2: -25.72, num3: -1.13 },
+  { name: "上证指数", num1: 2122.25, num2: +35.72, num3: +1.13 },
+  { name: "上证指数", num1: 6122.25, num2: -35.72, num3: -1.13 },
   { name: "上证指数", num1: 3122.25, num2: +35.72, num3: +1.13 },
   { name: "上证指数", num1: 3122.25, num2: -35.72, num3: -1.13 },
   { name: "上证指数", num1: 3122.25, num2: -35.72, num3: -1.13 },
@@ -56,8 +54,14 @@ let data = [
 let page = ref<number>(0);
 const changePage = (index: number) => {
   page.value = index;
-  console.log(Math.ceil(data.length / 7));
 };
+const emit=defineEmits(['updata'])
+const changeData  = (data: any) => {
+  emit('updata',data);
+};
+onMounted(() => {
+  changeData(data[0])
+})
 </script>
 
 <style scoped lang="scss">
@@ -73,12 +77,22 @@ const changePage = (index: number) => {
     border-radius: 10px;
     padding-left: 15px;
     min-width: 140px;
+    cursor: pointer;
     p {
+      pointer-events: none;
       margin: 5px;
     }
     .title {
+      pointer-events: none;
       font-weight: 600;
     }
+     border: 1px solid transparent;
+     
   }
+   :hover {
+    border: 1px solid ;
+  }
+  
 }
+
 </style>

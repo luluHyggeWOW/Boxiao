@@ -1,0 +1,66 @@
+<template>
+  <div>
+    <div ref="chartDom" style="width: 100%;height: 400px;">11</div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import * as echarts from 'echarts'
+import { onMounted, ref } from 'vue';
+
+var chartDom = ref(null);
+
+  let option = {
+  series: [
+    {
+      type: 'treemap',
+      data: [
+        {
+          name: 'nodeA',
+          value: 10,
+          children: [
+            {
+              name: 'nodeAa',
+              value: 4
+            },
+            {
+              name: 'nodeAb',
+              value: 6
+            }
+          ]
+        },
+        {
+          name: 'nodeB',
+          value: 20,
+          children: [
+            {
+              name: 'nodeBa',
+              value: 20,
+              children: [
+                {
+                  name: 'nodeBa1',
+                  value: 20
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+
+
+onMounted(() => {
+  var myChart = echarts.init(chartDom.value);
+  console.log(myChart);
+      // 设置初始化选项
+  myChart.setOption(option);
+  
+})
+</script>
+
+<style scoped>
+
+</style>
